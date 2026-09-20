@@ -1,0 +1,326 @@
+{
+  "name": "Grandmas Kitchen Razorpay Payment Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "razorpay-payment-webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -512,
+        -32
+      ],
+      "id": "e1ffe48d-74ff-481d-a605-b730f30be7c0",
+      "name": "Webhook",
+      "webhookId": "6628866e-fac1-4402-99d5-5fe7100f9245"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d5f248d8-b4f4-4353-8630-d7a836d5e5ca",
+              "leftValue": "={{ $json.body.payload.payment_link.entity.status }}",
+              "rightValue": "paid",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -288,
+        -32
+      ],
+      "id": "2fe2d69f-e56c-4d56-9d78-565ec4a3b46c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ",
+          "mode": "list",
+          "cachedResultName": "GrandmasChickenPickles",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Order ID",
+              "lookupValue": "={{ $json.body.payload.payment_link.entity.reference_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -128
+      ],
+      "id": "524679db-11a5-4426-bafb-79c791c135d8",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "buB8S7KWnxUImd59",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ",
+          "mode": "list",
+          "cachedResultName": "GrandmasChickenPickles",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Order ID": "={{ $json[\"Order ID\"] }}",
+            "Payment Status": "PAID"
+          },
+          "matchingColumns": [
+            "Order ID"
+          ],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Order Items",
+              "displayName": "Order Items",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Delivery Location",
+              "displayName": "Delivery Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Amount",
+              "displayName": "Total Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Order ID",
+              "displayName": "Order ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order Date & Time",
+              "displayName": "Order Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Link",
+              "displayName": "Payment Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payment Status",
+              "displayName": "Payment Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -128
+      ],
+      "id": "31275a3c-75d7-48d7-8544-0d366ac1b975",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "buB8S7KWnxUImd59",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8188702421",
+        "text": "=💰 Grandma's Kitchen Payment Received\n\nOrder ID: {{ $('Webhook').item.json.body.payload.payment_link.entity.reference_id }}\nCustomer: {{ $('Get row(s) in sheet').item.json['Customer Name'] }}\nPhone: {{ $('Get row(s) in sheet').item.json['Phone'] }}\nOrder: {{ $('Get row(s) in sheet').item.json['Order Items'] }}\nAmount: ₹{{ $('Get row(s) in sheet').item.json['Total Amount'] }}\nLocation: {{ $('Get row(s) in sheet').item.json['Delivery Location'] }}\n\nPayment Status: PAID ✅",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        -128
+      ],
+      "id": "d5932f09-0335-4206-97bd-2353fc659334",
+      "name": "Send a text message",
+      "webhookId": "956f175f-032b-417c-a05c-3f6feae871f4",
+      "credentials": {
+        "telegramApi": {
+          "id": "nJQOgfQyo224lz1e",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f241489d-97be-4c72-8111-b1ec8cbf9a48",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90ff42a90f4bf527a711f7a392d718327c3a59c6f800465c07bf368380f2fa3e"
+  },
+  "nodeGroups": [],
+  "id": "MrsM7IwIDpDw8Lqp",
+  "tags": []
+}

@@ -1,0 +1,65 @@
+{
+  "name": "Grandmas Kitchen Error Alerts",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "86c73616-2bf2-4e45-9bde-8dbe2215ea29",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "8188702421",
+        "text": "=🚨 Grandma's Kitchen Order Alert  An error occurred while processing an order.  Workflow: {{$json.workflow?.name || 'Grandmas Chicken Pickles'}}  Error: {{$json.execution?.error?.message || $json.error?.message || 'Unknown error'}}  Please check n8n Executions.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "3c0ed346-1557-47b0-b97c-f69f8d29bf01",
+      "name": "Send a text message",
+      "webhookId": "54e9366b-081d-41d3-a9a1-092ec2cb6ceb",
+      "credentials": {
+        "telegramApi": {
+          "id": "nJQOgfQyo224lz1e",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a7fb24de-26e8-4680-b102-d59e347bb8a3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90ff42a90f4bf527a711f7a392d718327c3a59c6f800465c07bf368380f2fa3e"
+  },
+  "nodeGroups": [],
+  "id": "kPpK5cyyLdWoIDZi",
+  "tags": []
+}

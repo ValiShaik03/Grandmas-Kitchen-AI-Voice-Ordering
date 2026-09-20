@@ -1,0 +1,412 @@
+{
+  "name": "Grandmas_Chicken_Pickles",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "grandmas-chicken-order",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        64
+      ],
+      "id": "1ed1b9e2-e6e6-45b4-9da8-aea0a19bf028",
+      "name": "Webhook",
+      "webhookId": "b83327c7-848e-4f1f-8081-d7288f3c1187"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ",
+          "mode": "list",
+          "cachedResultName": "GrandmasChickenPickles",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1t7bU4D1YEGv8j6TxtgBk1ya7plsq5cmoAoMUhPvoIeQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $('Webhook').item.json.body.customer_name }}",
+            "Phone": "={{ $('Webhook').item.json.body.customer_phone }}",
+            "Delivery Location": "={{ $('Webhook').item.json.body.delivery_location }}",
+            "Total Amount": "={{ $('Webhook').item.json.body.total_amount }}",
+            "Order ID": "={{ $('Edit Fields').item.json.order_id }}",
+            "Order Date & Time": "={{ $('Edit Fields').item.json.order_date_time }}",
+            "Order Items": "={{ $('Webhook').item.json.body.order_items }}",
+            "Payment Link": "={{ $json.short_url }}",
+            "Payment Status": "CREATED"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order Items",
+              "displayName": "Order Items",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Delivery Location",
+              "displayName": "Delivery Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total Amount",
+              "displayName": "Total Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order ID",
+              "displayName": "Order ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order Date & Time",
+              "displayName": "Order Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Payment Link",
+              "displayName": "Payment Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Payment Status",
+              "displayName": "Payment Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        -32
+      ],
+      "id": "450f5e76-3e8c-4b0a-a410-705c27d2f8c8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "buB8S7KWnxUImd59",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"message\": \"Order successfully registered. Payment link created.\",\n  \"order_id\": \"{{ $('Edit Fields').item.json.order_id }}\",\n  \"order_date_time\": \"{{ $('Edit Fields').item.json.order_date_time }}\",\n  \"customer_name\": \"{{ $('Webhook').item.json.body.customer_name }}\",\n  \"customer_phone\": \"{{ $('Webhook').item.json.body.customer_phone }}\",\n  \"order_items\": \"{{ $('Webhook').item.json.body.order_items }}\",\n  \"delivery_location\": \"{{ $('Webhook').item.json.body.delivery_location }}\",\n  \"total_amount\": {{ $('Webhook').item.json.body.total_amount }},\n  \"payment_link\": \"{{ $('HTTP Request').item.json.short_url }}\",\n  \"payment_status\": \"CREATED\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1120,
+        -32
+      ],
+      "id": "31b67eed-95f7-465f-963c-7d74ee00be9b",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4628911e-07ce-4714-bfb8-8ee0508a1771",
+              "name": "order_id",
+              "value": "=GK-{{Date.now()}}",
+              "type": "string"
+            },
+            {
+              "id": "b8d0e286-a881-4e02-b508-2fd16606cab7",
+              "name": "order_date_time",
+              "value": "={{ $now.setZone('Asia/Kolkata').toFormat('dd-MM-yyyy hh:mm:ss a') }}",
+              "type": "string"
+            },
+            {
+              "id": "0e87f5b3-167b-49f9-96c7-23862243b911",
+              "name": "order_items",
+              "value": "={{$json.body.order_items}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        64
+      ],
+      "id": "5498c0ed-f2cd-4433-a109-22be6683ea46",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "074942ed-8cc3-45b0-8e49-0028dcb44f12",
+              "leftValue": "={{ /^[0-9]{10}$/.test(String($json.body.customer_phone || '')) }}",
+              "rightValue": "^[0-9]{10}$",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "21c4ba9e-ae51-4399-983c-1a1b173011dd",
+              "leftValue": "={{$json.body.customer_name}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "35f8382c-a15e-4952-aeaf-7131771a872d",
+              "leftValue": "={{$json.body.order_items}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "45518b41-4325-4dcc-a88a-2afca7fd691e",
+              "leftValue": "={{$json.body.total_amount}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "445a310a-76a4-4677-bba0-98008c98437c",
+              "leftValue": "={{$json.body.delivery_location}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        64
+      ],
+      "id": "eb0e7d19-f27b-47e4-834f-aee19788a51d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"message\": \"Invalid order details. Please check the customer name, phone number, order items, delivery location, and total amount.\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        160
+      ],
+      "id": "c2245419-f80c-4066-8170-8ca4e23d48a0",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.razorpay.com/v1/payment_links",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"amount\": {{ Number($('Webhook').item.json.body.total_amount) * 100 }},\n  \"currency\": \"INR\",\n  \"accept_partial\": false,\n  \"description\": \"Grandma's Kitchen Order\",\n  \"reference_id\": \"{{ $('Edit Fields').item.json.order_id }}\",\n  \"notify\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        672,
+        -32
+      ],
+      "id": "0d27f515-4c13-49f0-b8d9-d29ba4372f2b",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "5y7r8ZdXkxO3qnyM",
+          "name": "Unnamed credential"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "kPpK5cyyLdWoIDZi"
+  },
+  "versionId": "049b7f29-26d7-40e4-8839-23207f9e3696",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90ff42a90f4bf527a711f7a392d718327c3a59c6f800465c07bf368380f2fa3e"
+  },
+  "nodeGroups": [],
+  "id": "qKbmlDJuc7QTCxxv",
+  "tags": []
+}
